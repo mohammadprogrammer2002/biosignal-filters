@@ -1,4 +1,30 @@
 <!doctype html>
+<select id="preset">
+<option>ECG</option><option>PPG</option><option>EMG</option><option>EEG</option>
+</select>
+<input id="fs" type="number" placeholder="Fs (Hz)" />
+<button id="process">پردازش</button>
+<button id="demo">اجرای دموی ECG</button>
+<span id="status" class="status">آماده</span>
+</div>
+</header>
+<main id="panels"></main>
+<template id="panel-tpl">
+<section class="panel">
+<h3></h3>
+<div class="params"></div>
+<div class="plot" style="height:260px"></div>
+<div class="actions">
+<button class="exportPNG">Export PNG</button>
+<button class="exportCSV">Export CSV</button>
+</div>
+</section>
+</template>
+<pre id="log" class="log"></pre>
+</body>
+</html>
+```html
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8" />

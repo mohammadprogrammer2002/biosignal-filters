@@ -1,13 +1,4 @@
 const fileEl = document.getElementById('file');
-for (let i=0;i<n;i++) out[i] = flat[i*ch + c];
-return out;
-});
-} else { // ch x n
-const ch = d0, n = d1;
-channels = Array.from({length: ch}, (_,i)=>`ch${i+1}`);
-data = Array.from({length: ch}, (_,c)=>{
-const out = new Float64Array(n);
-for (let i=0;i<n;i++) out[i] = flat[c*n + i];
 return out;
 });
 }
@@ -36,6 +27,8 @@ worker.postMessage({ type: 'parse_mat_v5', reqId: uid, name, buf, fs }, [buf]);
 
 
 function renderPanels(){
+try{
+setStatus('در حال پردازش...');
 if (!signal?.data?.length){ panelsEl.innerHTML = '<p style="padding:12px">ابتدا فایل سیگنال را بارگذاری کنید.</p>'; return; }
 panelsEl.innerHTML = '';
 const filters = [
@@ -56,10 +49,15 @@ node.querySelector('.params').textContent = JSON.stringify(f.params);
 panelsEl.appendChild(node);
 }
 worker.postMessage({ type:'process_all', signal });
+}catch(err){
+setStatus('خطا');
+log('Render error:', err);
+}
 }
 
 
 worker.onmessage = (e)=>{
+try{
 const { results } = e.data||{};
 if (!results) return;
 const raw = signal.data[0];
@@ -71,4 +69,9 @@ const x = Array.from({length:y.length}, (_,i)=> i/signal.meta.fs);
 const plotDiv = panels[idx].querySelector('.plot');
 Plotly.newPlot(plotDiv,[{x, y: Array.from(raw), name:'Raw'},{x, y, name:k}],{margin:{l:20,r:10,t:10,b:20}});
 });
+setStatus('آماده');
+}catch(err){
+setStatus('خطا در رسم');
+log('Plot error:', err);
+}
 };

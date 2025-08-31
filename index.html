@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>فیلتر سیگنال‌های حیاتی (MVP)</title>
+<link rel="stylesheet" href="styles.css" />
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/edfdecoder@0.1.2/dist/edfdecoder.umd.min.js"></script>
+<!-- h5wasm برای MAT v7.3 (HDF5) -->
+<script type="module">
+import * as hdf5 from "https://cdn.jsdelivr.net/npm/h5wasm@latest/dist/esm/hdf5_hl.js";
+await hdf5.ready;
+window.h5wasm = hdf5;
+</script>
+<script defer src="app.js"></script>
+</head>
+<body>
+<header>
+<h1>فیلتر سیگنال‌های حیاتی</h1>
+<div class="controls">
+<input id="file" type="file" accept=".csv,.edf,.bdf,.mat,.h5,.hdf5" />
+<select id="preset">
+<option>ECG</option><option>PPG</option><option>EMG</option><option>EEG</option>
+</select>
+<input id="fs" type="number" placeholder="Fs (Hz)" />
+</div>
+</header>
+<main id="panels"></main>
+<template id="panel-tpl">
+<section class="panel">
+<h3></h3>
+<div class="params"></div>
+<div class="plot" style="height:260px"></div>
+<div class="actions">
+<button class="exportPNG">Export PNG</button>
+<button class="exportCSV">Export CSV</button>
+</div>
+</section>
+</template>
+</body>
+</html>
